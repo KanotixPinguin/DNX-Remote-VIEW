@@ -85,7 +85,7 @@ async function updateStatus(el){
   let clients=getClients();
 
   el.innerHTML=
-   "DNX STATUS | " +
+   "DNX STATUS v1 | " +
    (cfg.receiver_name||"unknown") +
    " | 📡 " + profiles + " Profile" +
    " | 🟢 " + Math.round(profiles/2) + " Profile aktiv" +
