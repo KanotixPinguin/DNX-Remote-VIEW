@@ -59,3 +59,8 @@ echo "=== INSTALL FINISHED ==="
 echo
 echo "DNX Remote VIEW installed successfully."
 echo
+
+echo "=== INSTALL DNX STATUS ==="
+
+cp dnx_status.js /usr/lib/python3/dist-packages/htdocs/static/dnx_status.js
+
