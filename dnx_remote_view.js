@@ -835,7 +835,7 @@ async function createButton(){
    "left:20px;" +
    "top:260px;" +
    "width:340px;" +
-   "min-height:240px;" +
+   "height:70vh;" +
    "z-index:99999999;" +
    "background:#081522;" +
 
@@ -846,8 +846,8 @@ async function createButton(){
    "display:flex;" +
 
    "flex-direction:column;" +
-
-   "gap:10px;";
+"overflow:hidden;" +
+"gap:10px;";
 
   restorePos(
     "dnx_main_panel",
@@ -1041,6 +1041,7 @@ function mkMenu(title){
   let mAdmin=mkMenu("ADMIN");
   let mShare=mkMenu("SHARE");
   let mSession=mkMenu("SESSION");
+  let mHelp=mkMenu("? HELP");
 
   topbar.appendChild(mSources);
   topbar.appendChild(mUser);
@@ -1053,6 +1054,7 @@ function mkMenu(title){
 
   topbar.appendChild(mShare);
   topbar.appendChild(mSession);
+  topbar.appendChild(mHelp);
 
   topbar.style.cursor="move";
 
@@ -1081,8 +1083,22 @@ function mkMenu(title){
     "flex-direction:column;" +
     "gap:10px;" +
     "margin-top:10px;" +
-    "max-height:70vh;" +
-    "overflow:auto;";
+
+    "flex:1 1 auto;" +
+
+    "height:100%;" +
+
+    "min-height:0;" +
+
+    "overflow-y:scroll;" +
+
+    "overflow-x:hidden;" +
+
+    "padding-right:8px;" +
+
+    "pointer-events:auto;" +
+
+    "overscroll-behavior:contain;";
 
   panel.appendChild(content);
 
@@ -1096,6 +1112,8 @@ function createSection(title){
     "border:1px solid #1f6aa5;" +
     "border-radius:12px;" +
     "overflow:hidden;" +
+
+   "max-height:70vh;" +
     "background:#001018;";
 
   let head=document.createElement("div");
@@ -1164,7 +1182,407 @@ function clearRuntimeContent(){
 
   mSources.onclick=function(){
 
-    activateTab(mSources);
+  
+
+  mHelp.onclick=function(){
+
+    activateTab(mHelp);
+
+    clearRuntimeContent();
+
+    let sec=createSection(
+      "DNX Remote VIEW Help"
+    );
+
+    sec.body.style.maxHeight="60vh";
+    sec.body.style.overflowY="auto";
+    sec.body.style.overflowX="hidden";
+    sec.body.style.paddingRight="10px";
+    sec.body.style.scrollBehavior="smooth";
+
+    sec.body.innerHTML=`
+
+<div style="line-height:1.7;color:#fff;font-size:14px;">
+
+<h2>DNX Remote VIEW</h2>
+
+<div style="
+padding:12px;
+border-radius:12px;
+background:#2b1200;
+border:1px solid #ff8800;
+margin-bottom:14px;
+line-height:1.6;
+">
+
+<b>🇩🇪 DISCLAIMER</b><br><br>
+
+DNX Remote VIEW ist KEIN offizieller Bestandteil von
+OpenWebRX oder OpenWebRX+.<br><br>
+
+Dieses Projekt ist ein unabhängiges experimentelles
+Runtime-, Remote- und Multiuser-System,
+entwickelt von <b>KanotixPinguin</b>.<br><br>
+
+Es dient ausschließlich:
+<ul>
+<li>Testzwecken</li>
+<li>Entwicklungszwecken</li>
+<li>experimentellen Runtime-Umgebungen</li>
+</ul>
+
+Die Nutzung erfolgt vollständig auf eigene Gefahr.<br><br>
+
+Bitte kontaktiert NICHT die offiziellen Entwickler,
+Programmierer oder Maintainer von OpenWebRX/OpenWebRX+
+für Probleme, Fehler oder Support bezüglich
+DNX Remote VIEW.<br><br>
+
+DNX Remote VIEW gehört nicht zum offiziellen
+OpenWebRX/OpenWebRX+ Projekt.
+
+<hr style="margin:12px 0;">
+
+<b>🇬🇧 DISCLAIMER</b><br><br>
+
+DNX Remote VIEW is NOT an official part of
+OpenWebRX or OpenWebRX+.<br><br>
+
+This project is an independent experimental
+runtime, remote and multiuser environment
+developed by <b>KanotixPinguin</b>.<br><br>
+
+It is intended only for:
+<ul>
+<li>testing</li>
+<li>development</li>
+<li>experimental runtime environments</li>
+</ul>
+
+Use entirely at your own risk.<br><br>
+
+Please DO NOT contact the official
+OpenWebRX/OpenWebRX+ developers,
+programmers or maintainers for issues,
+bugs or support related to DNX Remote VIEW.<br><br>
+
+DNX Remote VIEW is not affiliated with the official
+OpenWebRX/OpenWebRX+ project.
+
+</div>
+
+<p>
+Browser-based SDR runtime and remote workspace environment.
+</p>
+
+<hr>
+
+<h2>🇩🇪 DEUTSCH</h2>
+
+<h3>OVERVIEW</h3>
+
+<p>
+DNX Remote VIEW ist ein browserbasiertes Runtime-,
+Remote- und Multiuser-System für OpenWebRX+.
+</p>
+
+<ul>
+<li>Runtime Windows</li>
+<li>Movable Panels</li>
+<li>Resizable Windows</li>
+<li>Taskbar System</li>
+<li>VNC Runtime Bridges</li>
+<li>Shared SDR Sessions</li>
+<li>Public/Private Sources</li>
+<li>Runtime User Layer</li>
+<li>Admin Runtime</li>
+<li>Collaborative SDR Workspaces</li>
+</ul>
+
+<h3>INSTALLATION</h3>
+
+<p>
+Benötigte Pakete:
+</p>
+
+<ul>
+<li>python3</li>
+<li>python3-flask</li>
+<li>websockify</li>
+<li>novnc</li>
+<li>git</li>
+</ul>
+
+<p>
+Systemdienste:
+</p>
+
+<ul>
+<li>dnx-remote-view.service</li>
+<li>Runtime API</li>
+<li>Bridge Restore System</li>
+</ul>
+
+<h3>USER GUIDE</h3>
+
+<ul>
+<li>SOURCES = Runtime Sources verwalten</li>
+<li>USER = Login / Session</li>
+<li>SHARE = Shared Runtime Sources</li>
+<li>SESSION = Runtime Workspaces</li>
+<li>ADMIN = globale Runtime Kontrolle</li>
+</ul>
+
+<h3>VNC SYSTEM</h3>
+
+<p>
+DNX Remote VIEW kann:
+</p>
+
+<ul>
+<li>VNC Rechner</li>
+<li>SDR PCs</li>
+<li>Remote Kameras</li>
+<li>SDRangel Systeme</li>
+<li>Remote Linux Systeme</li>
+</ul>
+
+<p>
+live im Browser darstellen.
+</p>
+
+<h3>MULTIUSER</h3>
+
+<ul>
+<li>guest = public runtime only</li>
+<li>user = private runtime layer</li>
+<li>admin = global runtime control</li>
+</ul>
+
+<h3>SHARING</h3>
+
+<ul>
+<li>public</li>
+<li>private</li>
+<li>shared</li>
+</ul>
+
+<h3>RUNTIME WINDOWS</h3>
+
+<ul>
+<li>movable</li>
+<li>resizable</li>
+<li>snap support</li>
+<li>runtime taskbar</li>
+<li>workspace persistence</li>
+</ul>
+
+<h3>TROUBLESHOOTING</h3>
+
+<ul>
+<li>Bridge offline → restart restore_bridges.py</li>
+<li>API offline → restart dnx_runtime_api.py</li>
+<li>VNC blackscreen → verify host/port</li>
+<li>Window sync issue → reload runtime state</li>
+</ul>
+
+<hr>
+
+<h2>🇬🇧 ENGLISH</h2>
+
+<h3>OVERVIEW</h3>
+
+<p>
+DNX Remote VIEW is a browser-based runtime,
+remote and multiuser environment for OpenWebRX+.
+</p>
+
+<ul>
+<li>Runtime windows</li>
+<li>Movable panels</li>
+<li>Resizable windows</li>
+<li>Taskbar system</li>
+<li>VNC runtime bridges</li>
+<li>Shared SDR sessions</li>
+<li>Public/private sources</li>
+<li>User runtime layers</li>
+<li>Admin runtime</li>
+<li>Collaborative SDR workspaces</li>
+</ul>
+
+<h3>INSTALLATION</h3>
+
+<p>
+Required packages:
+</p>
+
+<ul>
+<li>python3</li>
+<li>python3-flask</li>
+<li>websockify</li>
+<li>novnc</li>
+<li>git</li>
+</ul>
+
+<h3>USER GUIDE</h3>
+
+<ul>
+<li>SOURCES = manage runtime sources</li>
+<li>USER = login/session</li>
+<li>SHARE = shared runtime sources</li>
+<li>SESSION = runtime workspaces</li>
+<li>ADMIN = global runtime control</li>
+</ul>
+
+<h3>VNC SYSTEM</h3>
+
+<p>
+DNX Remote VIEW can display:
+</p>
+
+<ul>
+<li>VNC computers</li>
+<li>SDR systems</li>
+<li>Remote cameras</li>
+<li>SDRangel systems</li>
+<li>Linux remote systems</li>
+</ul>
+
+<p>
+live in the browser.
+</p>
+
+<h3>MULTIUSER</h3>
+
+<ul>
+<li>guest = public runtime only</li>
+<li>user = private runtime layer</li>
+<li>admin = global runtime control</li>
+</ul>
+
+<h3>SHARING</h3>
+
+<ul>
+<li>public</li>
+<li>private</li>
+<li>shared</li>
+</ul>
+
+<h3>RUNTIME WINDOWS</h3>
+
+<ul>
+<li>movable</li>
+<li>resizable</li>
+<li>snap support</li>
+<li>runtime taskbar</li>
+<li>workspace persistence</li>
+</ul>
+
+<h3>TROUBLESHOOTING</h3>
+
+<ul>
+<li>Bridge offline → restart restore_bridges.py</li>
+<li>API offline → restart dnx_runtime_api.py</li>
+<li>VNC blackscreen → verify host/port</li>
+<li>Window sync issue → reload runtime state</li>
+</ul>
+
+<hr>
+
+<h3>ABOUT</h3>
+
+<p>
+DNX Remote VIEW evolved from a simple OpenWebRX+
+plugin into a collaborative browser-based SDR runtime system.
+</p>
+
+</div>
+
+<h3>🇩🇪 DEUTSCH</h3>
+
+<b>DNX Remote VIEW</b><br>
+Browserbasiertes Runtime- und Remote-System für:
+<ul>
+<li>OpenWebRX+</li>
+<li>VNC Runtime</li>
+<li>Remote SDR Workspaces</li>
+<li>Multiuser Runtime</li>
+<li>Shared SDR Sessions</li>
+</ul>
+
+<b>Funktionen:</b>
+<ul>
+<li>Movable Windows</li>
+<li>Resizable Windows</li>
+<li>Taskbar Runtime</li>
+<li>VNC Bridges</li>
+<li>Public/Private Sources</li>
+<li>User Runtime Layer</li>
+<li>Shared Sessions</li>
+<li>Admin Runtime</li>
+</ul>
+
+<b>Source Types:</b>
+<ul>
+<li>iframe</li>
+<li>VNC</li>
+</ul>
+
+<b>User Rollen:</b>
+<ul>
+<li>guest = public only</li>
+<li>user = private runtime</li>
+<li>admin = global runtime control</li>
+</ul>
+
+<hr>
+
+<h3>🇬🇧 ENGLISH</h3>
+
+<b>DNX Remote VIEW</b><br>
+Browser-based runtime and remote environment for:
+<ul>
+<li>OpenWebRX+</li>
+<li>VNC runtime</li>
+<li>Remote SDR workspaces</li>
+<li>Multiuser runtime</li>
+<li>Shared SDR sessions</li>
+</ul>
+
+<b>Features:</b>
+<ul>
+<li>Movable windows</li>
+<li>Resizable windows</li>
+<li>Taskbar runtime</li>
+<li>VNC bridges</li>
+<li>Public/private sources</li>
+<li>User runtime layers</li>
+<li>Shared sessions</li>
+<li>Admin runtime</li>
+</ul>
+
+<b>Source Types:</b>
+<ul>
+<li>iframe</li>
+<li>VNC</li>
+</ul>
+
+<b>User Roles:</b>
+<ul>
+<li>guest = public only</li>
+<li>user = private runtime</li>
+<li>admin = global runtime control</li>
+</ul>
+
+</div>
+`;
+
+    content.appendChild(sec.wrap);
+
+  };
+
+
+  activateTab(mSources);
 
     clearRuntimeContent();
 
@@ -1285,6 +1703,406 @@ function clearRuntimeContent(){
     };
 
   }
+
+
+
+  mHelp.onclick=function(){
+
+    activateTab(mHelp);
+
+    clearRuntimeContent();
+
+    let sec=createSection(
+      "DNX Remote VIEW Help"
+    );
+
+    sec.body.style.maxHeight="60vh";
+    sec.body.style.overflowY="auto";
+    sec.body.style.overflowX="hidden";
+    sec.body.style.paddingRight="10px";
+    sec.body.style.scrollBehavior="smooth";
+
+    sec.body.innerHTML=`
+
+<div style="line-height:1.7;color:#fff;font-size:14px;">
+
+<h2>DNX Remote VIEW</h2>
+
+<div style="
+padding:12px;
+border-radius:12px;
+background:#2b1200;
+border:1px solid #ff8800;
+margin-bottom:14px;
+line-height:1.6;
+">
+
+<b>🇩🇪 DISCLAIMER</b><br><br>
+
+DNX Remote VIEW ist KEIN offizieller Bestandteil von
+OpenWebRX oder OpenWebRX+.<br><br>
+
+Dieses Projekt ist ein unabhängiges experimentelles
+Runtime-, Remote- und Multiuser-System,
+entwickelt von <b>KanotixPinguin</b>.<br><br>
+
+Es dient ausschließlich:
+<ul>
+<li>Testzwecken</li>
+<li>Entwicklungszwecken</li>
+<li>experimentellen Runtime-Umgebungen</li>
+</ul>
+
+Die Nutzung erfolgt vollständig auf eigene Gefahr.<br><br>
+
+Bitte kontaktiert NICHT die offiziellen Entwickler,
+Programmierer oder Maintainer von OpenWebRX/OpenWebRX+
+für Probleme, Fehler oder Support bezüglich
+DNX Remote VIEW.<br><br>
+
+DNX Remote VIEW gehört nicht zum offiziellen
+OpenWebRX/OpenWebRX+ Projekt.
+
+<hr style="margin:12px 0;">
+
+<b>🇬🇧 DISCLAIMER</b><br><br>
+
+DNX Remote VIEW is NOT an official part of
+OpenWebRX or OpenWebRX+.<br><br>
+
+This project is an independent experimental
+runtime, remote and multiuser environment
+developed by <b>KanotixPinguin</b>.<br><br>
+
+It is intended only for:
+<ul>
+<li>testing</li>
+<li>development</li>
+<li>experimental runtime environments</li>
+</ul>
+
+Use entirely at your own risk.<br><br>
+
+Please DO NOT contact the official
+OpenWebRX/OpenWebRX+ developers,
+programmers or maintainers for issues,
+bugs or support related to DNX Remote VIEW.<br><br>
+
+DNX Remote VIEW is not affiliated with the official
+OpenWebRX/OpenWebRX+ project.
+
+</div>
+
+<p>
+Browser-based SDR runtime and remote workspace environment.
+</p>
+
+<hr>
+
+<h2>🇩🇪 DEUTSCH</h2>
+
+<h3>OVERVIEW</h3>
+
+<p>
+DNX Remote VIEW ist ein browserbasiertes Runtime-,
+Remote- und Multiuser-System für OpenWebRX+.
+</p>
+
+<ul>
+<li>Runtime Windows</li>
+<li>Movable Panels</li>
+<li>Resizable Windows</li>
+<li>Taskbar System</li>
+<li>VNC Runtime Bridges</li>
+<li>Shared SDR Sessions</li>
+<li>Public/Private Sources</li>
+<li>Runtime User Layer</li>
+<li>Admin Runtime</li>
+<li>Collaborative SDR Workspaces</li>
+</ul>
+
+<h3>INSTALLATION</h3>
+
+<p>
+Benötigte Pakete:
+</p>
+
+<ul>
+<li>python3</li>
+<li>python3-flask</li>
+<li>websockify</li>
+<li>novnc</li>
+<li>git</li>
+</ul>
+
+<p>
+Systemdienste:
+</p>
+
+<ul>
+<li>dnx-remote-view.service</li>
+<li>Runtime API</li>
+<li>Bridge Restore System</li>
+</ul>
+
+<h3>USER GUIDE</h3>
+
+<ul>
+<li>SOURCES = Runtime Sources verwalten</li>
+<li>USER = Login / Session</li>
+<li>SHARE = Shared Runtime Sources</li>
+<li>SESSION = Runtime Workspaces</li>
+<li>ADMIN = globale Runtime Kontrolle</li>
+</ul>
+
+<h3>VNC SYSTEM</h3>
+
+<p>
+DNX Remote VIEW kann:
+</p>
+
+<ul>
+<li>VNC Rechner</li>
+<li>SDR PCs</li>
+<li>Remote Kameras</li>
+<li>SDRangel Systeme</li>
+<li>Remote Linux Systeme</li>
+</ul>
+
+<p>
+live im Browser darstellen.
+</p>
+
+<h3>MULTIUSER</h3>
+
+<ul>
+<li>guest = public runtime only</li>
+<li>user = private runtime layer</li>
+<li>admin = global runtime control</li>
+</ul>
+
+<h3>SHARING</h3>
+
+<ul>
+<li>public</li>
+<li>private</li>
+<li>shared</li>
+</ul>
+
+<h3>RUNTIME WINDOWS</h3>
+
+<ul>
+<li>movable</li>
+<li>resizable</li>
+<li>snap support</li>
+<li>runtime taskbar</li>
+<li>workspace persistence</li>
+</ul>
+
+<h3>TROUBLESHOOTING</h3>
+
+<ul>
+<li>Bridge offline → restart restore_bridges.py</li>
+<li>API offline → restart dnx_runtime_api.py</li>
+<li>VNC blackscreen → verify host/port</li>
+<li>Window sync issue → reload runtime state</li>
+</ul>
+
+<hr>
+
+<h2>🇬🇧 ENGLISH</h2>
+
+<h3>OVERVIEW</h3>
+
+<p>
+DNX Remote VIEW is a browser-based runtime,
+remote and multiuser environment for OpenWebRX+.
+</p>
+
+<ul>
+<li>Runtime windows</li>
+<li>Movable panels</li>
+<li>Resizable windows</li>
+<li>Taskbar system</li>
+<li>VNC runtime bridges</li>
+<li>Shared SDR sessions</li>
+<li>Public/private sources</li>
+<li>User runtime layers</li>
+<li>Admin runtime</li>
+<li>Collaborative SDR workspaces</li>
+</ul>
+
+<h3>INSTALLATION</h3>
+
+<p>
+Required packages:
+</p>
+
+<ul>
+<li>python3</li>
+<li>python3-flask</li>
+<li>websockify</li>
+<li>novnc</li>
+<li>git</li>
+</ul>
+
+<h3>USER GUIDE</h3>
+
+<ul>
+<li>SOURCES = manage runtime sources</li>
+<li>USER = login/session</li>
+<li>SHARE = shared runtime sources</li>
+<li>SESSION = runtime workspaces</li>
+<li>ADMIN = global runtime control</li>
+</ul>
+
+<h3>VNC SYSTEM</h3>
+
+<p>
+DNX Remote VIEW can display:
+</p>
+
+<ul>
+<li>VNC computers</li>
+<li>SDR systems</li>
+<li>Remote cameras</li>
+<li>SDRangel systems</li>
+<li>Linux remote systems</li>
+</ul>
+
+<p>
+live in the browser.
+</p>
+
+<h3>MULTIUSER</h3>
+
+<ul>
+<li>guest = public runtime only</li>
+<li>user = private runtime layer</li>
+<li>admin = global runtime control</li>
+</ul>
+
+<h3>SHARING</h3>
+
+<ul>
+<li>public</li>
+<li>private</li>
+<li>shared</li>
+</ul>
+
+<h3>RUNTIME WINDOWS</h3>
+
+<ul>
+<li>movable</li>
+<li>resizable</li>
+<li>snap support</li>
+<li>runtime taskbar</li>
+<li>workspace persistence</li>
+</ul>
+
+<h3>TROUBLESHOOTING</h3>
+
+<ul>
+<li>Bridge offline → restart restore_bridges.py</li>
+<li>API offline → restart dnx_runtime_api.py</li>
+<li>VNC blackscreen → verify host/port</li>
+<li>Window sync issue → reload runtime state</li>
+</ul>
+
+<hr>
+
+<h3>ABOUT</h3>
+
+<p>
+DNX Remote VIEW evolved from a simple OpenWebRX+
+plugin into a collaborative browser-based SDR runtime system.
+</p>
+
+</div>
+
+<h3>🇩🇪 DEUTSCH</h3>
+
+<b>DNX Remote VIEW</b><br>
+Browserbasiertes Runtime- und Remote-System für:
+<ul>
+<li>OpenWebRX+</li>
+<li>VNC Runtime</li>
+<li>Remote SDR Workspaces</li>
+<li>Multiuser Runtime</li>
+<li>Shared SDR Sessions</li>
+</ul>
+
+<b>Funktionen:</b>
+<ul>
+<li>Movable Windows</li>
+<li>Resizable Windows</li>
+<li>Taskbar Runtime</li>
+<li>VNC Bridges</li>
+<li>Public/Private Sources</li>
+<li>User Runtime Layer</li>
+<li>Shared Sessions</li>
+<li>Admin Runtime</li>
+</ul>
+
+<b>Source Types:</b>
+<ul>
+<li>iframe</li>
+<li>VNC</li>
+</ul>
+
+<b>User Rollen:</b>
+<ul>
+<li>guest = public only</li>
+<li>user = private runtime</li>
+<li>admin = global runtime control</li>
+</ul>
+
+<hr>
+
+<h3>🇬🇧 ENGLISH</h3>
+
+<b>DNX Remote VIEW</b><br>
+Browser-based runtime and remote environment for:
+<ul>
+<li>OpenWebRX+</li>
+<li>VNC runtime</li>
+<li>Remote SDR workspaces</li>
+<li>Multiuser runtime</li>
+<li>Shared SDR sessions</li>
+</ul>
+
+<b>Features:</b>
+<ul>
+<li>Movable windows</li>
+<li>Resizable windows</li>
+<li>Taskbar runtime</li>
+<li>VNC bridges</li>
+<li>Public/private sources</li>
+<li>User runtime layers</li>
+<li>Shared sessions</li>
+<li>Admin runtime</li>
+</ul>
+
+<b>Source Types:</b>
+<ul>
+<li>iframe</li>
+<li>VNC</li>
+</ul>
+
+<b>User Roles:</b>
+<ul>
+<li>guest = public only</li>
+<li>user = private runtime</li>
+<li>admin = global runtime control</li>
+</ul>
+
+</div>
+`;
+
+    content.appendChild(sec.wrap);
+
+  };
+
 
   activateTab(mSources);
 
