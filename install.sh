@@ -1,52 +1,61 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -e
 
 echo
-echo "=== DNX Remote VIEW INSTALL ==="
+echo "=== DNX REMOTE VIEW INSTALLER ==="
 echo
 
-mapfile -t CONTAINERS < <(docker ps --format "{{.Names}}" | grep -Ei "owrx|openwebrx")
+echo "=== INSTALL PACKAGES ==="
 
-if [ ${#CONTAINERS[@]} -eq 0 ]; then
- echo "No OpenWebRX containers found."
- exit 1
-fi
+apt update
 
-echo "Found OpenWebRX containers:"
-echo
-
-for i in "${!CONTAINERS[@]}"; do
- echo "$((i+1))) ${CONTAINERS[$i]}"
-done
+apt install -y \
+python3 \
+python3-flask \
+websockify \
+novnc \
+git
 
 echo
-read -p "Select container number: " NUM
+echo "=== CREATE RUNTIME DIRS ==="
 
-INDEX=$((NUM-1))
-CONTAINER="${CONTAINERS[$INDEX]}"
-
-if [ -z "$CONTAINER" ]; then
- echo "Invalid selection."
- exit 1
-fi
+mkdir -p /home/ich/DNX-Remote-VIEW/runtime
 
 echo
-echo "Using container: $CONTAINER"
+echo "=== CREATE DEFAULT bridges.json ==="
+
+cat > /home/ich/DNX-Remote-VIEW/bridges.json <<'JSON'
+{
+  "bridges": []
+}
+JSON
+
 echo
+echo "=== INSTALL SYSTEMD SERVICE ==="
 
-docker exec "$CONTAINER" mkdir -p /usr/lib/python3/dist-packages/htdocs/static
+cat > /etc/systemd/system/dnx-remote-view.service <<'SERVICE'
+[Unit]
+Description=DNX Remote VIEW Bridge Restore
+After=network.target
 
-docker cp dnx_remote_view.js "$CONTAINER":/usr/lib/python3/dist-packages/htdocs/static/dnx_remote_view.js
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/ich/DNX-Remote-VIEW/scripts/restore_bridges.py
+RemainAfterExit=yes
 
-docker cp sources.json "$CONTAINER":/usr/lib/python3/dist-packages/htdocs/static/sources.json
+[Install]
+WantedBy=multi-user.target
+SERVICE
 
-docker exec "$CONTAINER" sh -c '
-grep -q dnx_remote_view.js /usr/lib/python3/dist-packages/htdocs/index.html || \
-sed -i "s#</body>#<script src=\"/static/static/dnx_remote_view.js\"></script>\n</body>#" \
-/usr/lib/python3/dist-packages/htdocs/index.html
-'
+systemctl daemon-reload
 
-docker restart "$CONTAINER"
+systemctl enable dnx-remote-view.service
 
+systemctl start dnx-remote-view.service
+
+echo
+echo "=== INSTALL FINISHED ==="
 echo
 echo "DNX Remote VIEW installed successfully."
 echo
