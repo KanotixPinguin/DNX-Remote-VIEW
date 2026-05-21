@@ -1,0 +1,50 @@
+{
+  "sources": [
+    {
+      "id": "leftvnc",
+      "title": "LEFT VNC",
+      "type": "iframe",
+      "url": "http://192.168.178.113:6082/vnc.html?autoconnect=1&resize=remote&view_only=1",
+      "width": 900,
+      "height": 600,
+      "left": 120,
+      "top": 180,
+      "enabled": true
+    },
+    {
+      "id": "rightvnc",
+      "title": "RIGHT VNC",
+      "type": "iframe",
+      "url": "http://192.168.178.113:6083/vnc.html?autoconnect=1&resize=remote&view_only=1",
+      "width": 900,
+      "height": 600,
+      "left": 220,
+      "top": 220,
+      "enabled": true
+    },
+    {
+      "id": "google",
+      "title": "GOOGLE",
+      "type": "iframe",
+      "url": "https://www.google.de",
+      "width": 1000,
+      "height": 700,
+      "left": 320,
+      "top": 120,
+      "enabled": true
+    },
+    {
+      "id": "vnc_runtime_demo",
+      "title": "VNC Runtime Demo",
+      "type": "vnc",
+      "host": "192.168.178.127",
+      "port": 5900,
+      "bridge_port": 6090,
+      "width": 900,
+      "height": 600,
+      "left": 240,
+      "top": 240,
+      "enabled": true
+    }
+  ]
+}
