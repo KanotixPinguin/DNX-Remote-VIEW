@@ -5,12 +5,13 @@ from pathlib import Path
 from flask import Flask,request,jsonify
 import subprocess
 import json
+import sys
 
 app=Flask(__name__)
 
 
 RUNTIME_DIR=Path(
- "/home/ich/DNX-Remote-VIEW-CLEAN/runtime"
+ str(Path(__file__).resolve().parent.parent / "runtime")
 )
 
 USERS_DIR=RUNTIME_DIR / "users"
@@ -74,7 +75,7 @@ def save_user(user):
 from pathlib import Path
 
 STATE_FILE=Path(
- "/home/ich/DNX-Remote-VIEW-CLEAN/runtime_state.json"
+ str(Path(__file__).resolve().parent.parent / "runtime_state.json")
 )
 
 @app.route("/load_state",methods=["GET"])
@@ -108,7 +109,7 @@ def save_state():
 
 
 
-USERS_FILE=Path("/home/ich/DNX-Remote-VIEW-CLEAN/runtime_users.json")
+USERS_FILE=Path(str(Path(__file__).resolve().parent.parent / "runtime_users.json"))
 
 @app.route("/login",methods=["POST"])
 def login():
@@ -142,7 +143,7 @@ def create_bridge():
     port=str(data.get("port"))
 
     out=subprocess.check_output([
-        "/home/ich/DNX-Remote-VIEW-CLEAN/scripts/create_bridge.py",
+        sys.executable, str(Path(__file__).resolve().parent / "create_bridge.py"),
         host,
         port
     ])

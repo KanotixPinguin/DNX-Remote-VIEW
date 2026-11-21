@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 REGISTRY=Path(
- "/home/ich/DNX-Remote-VIEW-CLEAN/bridges.json"
+ str(Path(__file__).resolve().parent.parent / "bridges.json")
 )
 
 def load_registry():

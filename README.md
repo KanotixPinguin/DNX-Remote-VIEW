@@ -231,3 +231,20 @@ KanotixPinguin
 
 Experimental Runtime Infrastructure Project
 
+
+# PUBLIC RELEASE SAFETY NOTICE
+
+This release package was built without private bridge IP addresses, passwords or runtime users.
+Configure bridges after installation in `/opt/dnx-remote-view/server/bridges.json`.
+
+Private, independent hobby project. Not an official OpenWebRX/OpenWebRX+ component or plugin.
+No affiliation, endorsement or support by their developers. Use entirely at your own risk.
+To the extent permitted by law, no liability is accepted. Back up first and test on a separate system.
+
+## Gemeinsame Receiver-Schalterzeile
+
+Version 1.1.0 verschiebt den vorhandenen Schalter `DNX Remote VIEW` in dieselbe Zeile wie Gelb Hover, Gruen Tuning, DNX Status, 3D Tool und noVNC/Foto. Die vollständige Remote-VIEW-Funktion bleibt unverändert.
+
+## Farbige Aktivzustände
+
+Status blau, 3D Tool violett, noVNC/Foto dunkelblau und Remote VIEW türkis. Verborgene/inaktive Tools werden grau angezeigt. Der Zustand wird regelmäßig anhand des tatsächlich sichtbaren Fensters geprüft.

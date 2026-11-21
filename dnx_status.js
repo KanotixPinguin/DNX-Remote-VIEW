@@ -28,6 +28,14 @@ function makeDraggable(el){
 
   el.style.cursor="grab";
 
+  localStorage.setItem(
+   "dnx_status_pos",
+   JSON.stringify({
+    left:el.style.left,
+    top:el.style.top
+   })
+  );
+
  });
 
  document.addEventListener("mousemove",function(e){
@@ -41,27 +49,58 @@ function makeDraggable(el){
 
 }
 
-function getClients(){
+function restorePosition(el){
 
  try{
 
-  let txt=document.querySelector("#openwebrx-bar-clients")?.textContent||"";
+  let p=JSON.parse(
+   localStorage.getItem("dnx_status_pos")
+  );
 
-  let m=txt.match(/\[(\d+)\]/);
+  if(p){
 
-  if(m){
-
-   return parseInt(m[1])||0;
+   el.style.left=p.left||"20px";
+   el.style.top=p.top||"20px";
 
   }
 
  }catch(e){}
 
- return 0;
-
 }
 
-async function updateStatus(el){
+async function buildStatus(){
+
+ let old=document.getElementById(STATUS_ID);
+if(old){updateOnly(old);return;}
+
+ if(old) old.remove();
+
+ let el=document.createElement("div");
+
+ el.id=STATUS_ID;
+
+ el.style.cssText=
+  "position:fixed;" +
+  "left:20px;" +
+  "top:20px;" +
+  "z-index:999999;" +
+  "padding:8px 16px;" +
+  "border-radius:12px;" +
+  "background:rgba(0,0,0,.65);" +
+  "backdrop-filter:blur(4px);" +
+  "color:#fff;" +
+  "font-size:14px;" +
+  "font-weight:700;" +
+  "white-space:nowrap;" +
+  "cursor:grab;" +
+  "user-select:none;" +
+  "box-shadow:0 0 18px rgba(0,180,255,.35);";
+
+ document.body.appendChild(el);
+
+ restorePosition(el);
+
+ makeDraggable(el);
 
  try{
 
@@ -82,16 +121,13 @@ async function updateStatus(el){
 
   let devices=Object.keys(sdrs).length;
 
-  let clients=getClients();
-
   el.innerHTML=
-   "DNX STATUS v1 | " +
-   (cfg.receiver_name||"unknown") +
+   "DNX STATUS | " + (cfg.receiver_name||"unknown") +
    " | 📡 " + profiles + " Profile" +
    " | 🟢 " + Math.round(profiles/2) + " Profile aktiv" +
    " | 📻 Devices: " + devices +
-   " | 👤 USER: " + clients +
-   " | 🔌 Connections: " + clients;
+   " | 👤 USER: 0" +
+   " | 🔌 Connections: 0";
 
  }catch(e){
 
@@ -101,50 +137,49 @@ async function updateStatus(el){
 
 }
 
-function init(){
+setTimeout(function(){
 
- let old=document.getElementById(STATUS_ID);
+ buildStatus();
 
- if(old){
+ setInterval(buildStatus,3000);
 
-  old.remove();
+},3000);
+
+})();
+
+async function updateOnly(el){
+
+ try{
+
+  let cfg=await fetch(
+   "/static/static/settings.json?ts="+Date.now(),
+   {cache:"no-store"}
+  ).then(r=>r.json());
+
+  let sdrs=cfg.sdrs||{};
+
+  let profiles=0;
+
+  Object.values(sdrs).forEach(function(v){
+
+   profiles += Object.keys(v.profiles||{}).length;
+
+  });
+
+  let devices=Object.keys(sdrs).length;
+
+  el.innerHTML=
+   "DNX STATUS | " + (cfg.receiver_name||"unknown") +
+   " | 📡 " + profiles + " Profile" +
+   " | 🟢 " + Math.round(profiles/2) + " Profile aktiv" +
+   " | 📻 Devices: " + devices +
+   " | 👤 USER: 0" +
+   " | 🔌 Connections: 0";
+
+ }catch(e){
+
+  el.innerHTML="DNX STATUS ERROR";
 
  }
 
- let el=document.createElement("div");
-
- el.id=STATUS_ID;
-
- el.style.cssText=
-  "position:fixed;" +
-  "left:20px;" +
-  "top:20px;" +
-  "z-index:999999;" +
-  "padding:8px 16px;" +
-  "border-radius:12px;" +
-  "background:rgba(0,0,0,.65);" +
-  "color:#fff;" +
-  "font-size:14px;" +
-  "font-weight:700;" +
-  "white-space:nowrap;" +
-  "cursor:grab;" +
-  "user-select:none;" +
-  "box-shadow:0 0 18px rgba(0,180,255,.35);";
-
- document.body.appendChild(el);
-
- makeDraggable(el);
-
- updateStatus(el);
-
- setInterval(function(){
-
-  updateStatus(el);
-
- },2000);
-
 }
-
-setTimeout(init,3000);
-
-})();

@@ -1,8 +1,1 @@
-{
-  "sources": [],
-  "windows": [],
-  "taskbar": {
-    "left": "20px",
-    "top": "calc(100vh - 70px)"
-  }
-}
+{}
