@@ -18,6 +18,12 @@
 > - **No Public Support & No Warranty:** There is **no public support**, no warranty, and no liability. Use entirely at your own risk.
 > - **Pure Hobby Project — Free to Use, Modify & Redistribute:** Created solely out of personal hobby interest in the shared radio/SDR hobby; freely available to use, share, modify, and improve.
 
+<!-- DNX-PREVIEW-START -->
+## Live-Vorschau / Live Preview
+
+![Live-Vorschau / Live Preview — DNX Remote VIEW](docs/preview.png)
+<!-- DNX-PREVIEW-END -->
+
 Browser-based runtime, remote and multiuser workspace environment for OpenWebRX+.
 
 ---
