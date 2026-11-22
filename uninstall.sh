@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 [[ $EUID -eq 0 ]]||exit 1
-systemctl disable --now dnx-remote-view.service 2>/dev/null||true
-rm -f /etc/systemd/system/dnx-remote-view.service;systemctl daemon-reload
+systemctl disable --now dnx-remote-view.service dnx-remote-view-api.service 2>/dev/null||true
+rm -f /etc/systemd/system/dnx-remote-view.service /etc/systemd/system/dnx-remote-view-api.service;systemctl daemon-reload
 CONTAINER=${CONTAINER:-};if [[ -z $CONTAINER ]]&&command -v docker>/dev/null;then CONTAINER=$(docker ps --format '{{.Names}}'|grep -Ei 'owrx|openwebrx'|head -n1||true);fi
 if [[ -n $CONTAINER ]];then SRC=$(docker inspect "$CONTAINER" --format '{{range .Mounts}}{{if eq .Destination "/usr/lib/python3/dist-packages/htdocs/plugins"}}{{.Source}}{{end}}{{end}}');if [[ -n $SRC ]];then rm -rf "$SRC/receiver/dnx_remote_view";python3 - "$SRC/receiver/init.js" <<'PY'
 from pathlib import Path

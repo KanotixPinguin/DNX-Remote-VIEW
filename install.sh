@@ -3,7 +3,7 @@ set -Eeuo pipefail
 [[ $EUID -eq 0 ]]||{ echo 'Bitte als root/sudo.';exit 1;}
 HERE=$(cd "$(dirname "$0")"&&pwd);ROOT=/opt/dnx-remote-view;CONTAINER=${CONTAINER:-};STAMP=$(date +%F-%H%M%S)
 echo 'Private, inoffizielle Hobby-Anpassung; kein offizielles OpenWebRX-Projekt. Nutzung auf eigene Gefahr.'
-command -v apt-get>/dev/null&&{ apt-get update;apt-get install -y python3 websockify novnc; }
+command -v apt-get>/dev/null&&{ apt-get update;apt-get install -y python3 python3-flask websockify novnc; }
 mkdir -p "$ROOT/server/scripts" "$ROOT/server/runtime/users" "$ROOT/ui" "$ROOT/backups/$STAMP"
 [[ -d $ROOT/server ]]&&cp -a "$ROOT/server" "$ROOT/backups/$STAMP/" 2>/dev/null||true
 cp -a "$HERE/scripts/restore_bridges.py" "$HERE/scripts/create_bridge.py" "$HERE/scripts/start_vnc_bridge.sh" "$HERE/scripts/dnx_runtime_api.py" "$ROOT/server/scripts/"
@@ -40,6 +40,19 @@ KillMode=control-group
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl daemon-reload;systemctl enable --now dnx-remote-view.service
+cat >/etc/systemd/system/dnx-remote-view-api.service <<EOF
+[Unit]
+Description=DNX Remote VIEW Runtime API (Port 8099)
+After=network.target
+[Service]
+Type=simple
+WorkingDirectory=$ROOT/server
+ExecStart=/usr/bin/python3 $ROOT/server/scripts/dnx_runtime_api.py
+Restart=always
+RestartSec=2
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload;systemctl enable --now dnx-remote-view.service dnx-remote-view-api.service
 [[ -n $CONTAINER ]]&&docker restart "$CONTAINER"||true
 echo 'Installiert. Bridges konfigurieren: /opt/dnx-remote-view/server/bridges.json'

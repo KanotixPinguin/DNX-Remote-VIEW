@@ -1,32 +1,27 @@
 #!/usr/bin/env python3
-
+from pathlib import Path
 import json
+import os
 import socket
 import subprocess
 import sys
 
+SERVER_DIR = Path(os.environ.get("DNX_RV_SERVER_DIR", "/opt/dnx-remote-view/server"))
+REGISTRY = SERVER_DIR / "bridges.json"
 
-from pathlib import Path
-
-REGISTRY=Path(
- str(Path(__file__).resolve().parent.parent / "bridges.json")
-)
 
 def load_registry():
-
     if not REGISTRY.exists():
-        return {"bridges":[]}
-
+        return {"bridges": []}
     try:
-        return json.loads(REGISTRY.read_text())
-    except:
-        return {"bridges":[]}
+        return json.loads(REGISTRY.read_text(encoding="utf-8"))
+    except Exception:
+        return {"bridges": []}
+
 
 def save_registry(data):
-
-    REGISTRY.write_text(
-        json.dumps(data,indent=2)
-    )
+    REGISTRY.parent.mkdir(parents=True, exist_ok=True)
+    REGISTRY.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
 if len(sys.argv) != 3:
@@ -36,54 +31,32 @@ if len(sys.argv) != 3:
 host = sys.argv[1]
 port = sys.argv[2]
 
-def find_free_port(start=6090,end=6200):
 
-    for p in range(start,end):
-
-        s=socket.socket()
-
+def find_free_port(start=6090, end=6200):
+    for p in range(start, end):
+        s = socket.socket()
         try:
-            s.bind(("0.0.0.0",p))
+            s.bind(("0.0.0.0", p))
             s.close()
             return p
-        except:
-            pass
-
+        except Exception:
+            try:
+                s.close()
+            except Exception:
+                pass
     return None
 
-bridge=find_free_port()
 
+bridge = find_free_port()
 if not bridge:
     print("No free bridge ports.")
     sys.exit(1)
 
-cmd=[
-    "websockify",
-    "--web=/usr/share/novnc/",
-    f"0.0.0.0:{bridge}",
-    f"{host}:{port}"
-]
+cmd = ["websockify", "--web=/usr/share/novnc/", f"0.0.0.0:{bridge}", f"{host}:{port}"]
+subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-subprocess.Popen(
-    cmd,
-    stdout=subprocess.DEVNULL,
-    stderr=subprocess.DEVNULL
-)
-
-registry=load_registry()
-
-registry["bridges"].append({
-
-    "host":host,
-    "port":int(port),
-    "bridge_port":bridge
-
-})
-
+registry = load_registry()
+registry["bridges"].append({"host": host, "port": int(port), "bridge_port": bridge})
 save_registry(registry)
 
-print(json.dumps({
-    "bridge_port":bridge,
-    "host":host,
-    "port":port
-}))
+print(json.dumps({"bridge_port": bridge, "host": host, "port": port}))

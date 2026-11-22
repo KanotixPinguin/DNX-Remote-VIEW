@@ -2,49 +2,38 @@
   "sources": [
     {
       "id": "leftvnc",
-      "title": "LEFT VNC",
+      "title": "LEFT VNC (Beispiel)",
       "type": "iframe",
-      "url": "http://192.0.2.113:6082/vnc.html?autoconnect=1&resize=remote&view_only=1",
+      "url": "http://127.0.0.1:6082/vnc.html?autoconnect=1&resize=remote&view_only=1",
       "width": 900,
       "height": 600,
       "left": 120,
       "top": 180,
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "rightvnc",
-      "title": "RIGHT VNC",
+      "title": "RIGHT VNC (Beispiel)",
       "type": "iframe",
-      "url": "http://192.0.2.113:6083/vnc.html?autoconnect=1&resize=remote&view_only=1",
+      "url": "http://127.0.0.1:6083/vnc.html?autoconnect=1&resize=remote&view_only=1",
       "width": 900,
       "height": 600,
       "left": 220,
       "top": 220,
-      "enabled": true
-    },
-    {
-      "id": "google",
-      "title": "GOOGLE",
-      "type": "iframe",
-      "url": "https://www.google.de",
-      "width": 1000,
-      "height": 700,
-      "left": 320,
-      "top": 120,
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "vnc_runtime_demo",
-      "title": "VNC Runtime Demo",
+      "title": "VNC Runtime Demo (Beispiel)",
       "type": "vnc",
-      "host": "192.0.2.127",
+      "host": "192.0.2.10",
       "port": 5900,
       "bridge_port": 6090,
       "width": 900,
       "height": 600,
       "left": 240,
       "top": 240,
-      "enabled": true
+      "enabled": false
     }
   ]
 }

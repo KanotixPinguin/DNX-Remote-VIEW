@@ -272,3 +272,12 @@ Version 1.1.0 verschiebt den vorhandenen Schalter `DNX Remote VIEW` in dieselbe 
 ## Farbige Aktivzustände
 
 Status blau, 3D Tool violett, noVNC/Foto dunkelblau und Remote VIEW türkis. Verborgene/inaktive Tools werden grau angezeigt. Der Zustand wird regelmäßig anhand des tatsächlich sichtbaren Fensters geprüft.
+
+## Neu in v1.2.2
+
+- **Atomare, Thread-sichere Runtime-API (`dnx_runtime_api.py`, Port `8099`):**
+  - `_IO_LOCK` + atomisches Schreiben via temporäre Datei (`os.fsync` + `os.replace`) und `threaded=True` — verhindert `JSONDecodeError` (`HTTP 500`) bei parallelen Zugriffen.
+  - Lehnt temporäre Gast-Schlüssel ohne Sitzungsnummer (`dnxfunk-x*`) sauber ab.
+  - Schützt `POST /save_user/dnxupdate` serverseitig mit Admin-Rollenprüfung (`dnx_receiver_rights`, fail-closed `403`, falls keine Account-Control aktiv ist).
+- **Bereinigte Pfade & Beispielkonfiguration:** Kein fest verdrahteter Home-Pfad in `dnx_runtime_api.py` / `create_bridge.py`; `sources.json` enthält nur sichere deaktivierte Beispielvorlagen ohne private LAN-IPs. `install.sh` richtet `dnx-remote-view-api.service` direkt mit ein.
+
