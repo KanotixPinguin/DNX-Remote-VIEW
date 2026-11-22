@@ -1,0 +1,83 @@
+{
+  "sources": [
+    {
+      "id": "leftvnc",
+      "title": "SDRangel / Remote Desktop (noVNC)",
+      "type": "vnc",
+      "host": "192.0.2.20",
+      "port": 5900,
+      "bridge_port": 6082,
+      "width": 900,
+      "height": 600,
+      "left": 80,
+      "top": 120,
+      "enabled": false
+    },
+    {
+      "id": "webcam_chat_demo",
+      "title": "🎥 Webcam-Chat / WebRTC Runde",
+      "type": "webcam",
+      "url": "https://meet.jit.si/DNX-SDR-Funkrunde-Beispiel",
+      "width": 860,
+      "height": 620,
+      "left": 140,
+      "top": 140,
+      "enabled": false
+    },
+    {
+      "id": "live_cam_stream",
+      "title": "📹 Live-Kamera / MJPEG / HLS Stream",
+      "type": "stream",
+      "url": "http://127.0.0.1:8088/stream.mjpg",
+      "width": 720,
+      "height": 480,
+      "left": 200,
+      "top": 160,
+      "enabled": false
+    },
+    {
+      "id": "web_terminal",
+      "title": "⌨ Web-SSH / Terminal (ttyd)",
+      "type": "terminal",
+      "url": "http://127.0.0.1:7681/",
+      "width": 800,
+      "height": 520,
+      "left": 260,
+      "top": 180,
+      "enabled": false
+    },
+    {
+      "id": "rdp_guac",
+      "title": "🖥 RDP / Multi-Gateway (Guacamole)",
+      "type": "rdp",
+      "url": "http://127.0.0.1:8080/guacamole/",
+      "width": 980,
+      "height": 640,
+      "left": 300,
+      "top": 130,
+      "enabled": false
+    },
+    {
+      "id": "funk_chat",
+      "title": "💬 Web-Chat / Matrix Element",
+      "type": "chat",
+      "url": "https://app.element.io/",
+      "width": 640,
+      "height": 580,
+      "left": 340,
+      "top": 150,
+      "enabled": false
+    },
+    {
+      "id": "web_dashboard",
+      "title": "🌐 HTTPS Web-App / Dashboard (iframe)",
+      "type": "iframe",
+      "url": "http://127.0.0.1:8094/",
+      "width": 920,
+      "height": 620,
+      "left": 180,
+      "top": 110,
+      "enabled": false
+    }
+  ]
+}
