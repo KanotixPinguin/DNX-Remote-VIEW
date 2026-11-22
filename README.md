@@ -70,3 +70,25 @@ systemctl status dnx-remote-view.service dnx-remote-view-api.service
 sudo ./uninstall.sh
 ```
 
+---
+
+## Benutzerbezogene Speicherung & Verbindungen (`:8099` + Account Control + Styler)
+
+![DNX Gesamtarchitektur & Verbindungen](docs/dnx-architektur-verbindungen.png)
+![Datenflüsse: Spektrum, 3D-Hintergrund & Speicherung](docs/dnx-datenfluss-speicherung.png)
+
+### Wie benutzer- & rollenbezogenes Speichern in `DNX Remote VIEW` arbeitet
+
+1. **Browser-Schlüssel (`localStorage`):**
+   * `dnx_user` — aktiver Benutzername des Workspace-Layers
+   * `dnx_runtime_sources` — persönliche Quellenliste inkl. Sichtbarkeit (`private` / `shared` / `public`), Protokoll und URL/Bridge-Port
+   * `dnx_remote_btn` — freie Bildschirmposition des `REMOTE VIEW`-Buttons
+   * `dnx_admin` — Admin-Runtime-Status zur Verwaltung globaler Quellen
+2. **Runtime-API-Endpunkte (Port `:8099`):**
+   * `GET /load_global` — lädt öffentliche/globale Standard-Quellen und Fenster-Vorgaben (`runtime_state.json`, `sources.json`)
+   * `GET /load_user/<user>` & `POST /save_user/<user>` — lädt und sichert die **persönliche Workspace-Konfiguration pro Benutzer** (`runtime/users/<user>.json`: eigene Quellen + Fensterpositionen/-größen)
+   * `POST /create_bridge` & `bridges.json` — richtet neue `websockify`/`noVNC`-Brücken ein (`restore_bridges.py`)
+   * `POST /login` — Authentifizierung für Benutzer-/Admin-Workspace-Schicht
+3. **Verbindung zu `DNX Styler` & `Account Control`:**
+   * In `DNX-Styler` übernimmt `#dnx-master-remote` (`t_remote`) den Ein-/Ausschalter in der gemeinsamen Werkzeugzeile (`DNX Werkzeuge`).
+   * Über `DNX-Receiver-Account-Control` (`:8095/api/me`) prüft die Umgebung das Recht `remote` bzw. `novnc` pro Rolle (`guest`, `user`, `extended`, `admin`).
